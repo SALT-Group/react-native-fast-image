@@ -21,13 +21,15 @@ class FastImageViewWithUrl extends ImageView {
     }
 
     public void setSource(ReadableMap source) {
-        mSource = source;
+        if (mSource != source) {
+            mSource = source;
+            tryLoadImage();
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
         // This will cancel existing requests.
         if (mRequestManager != null) {
             mRequestManager.clear(this);
@@ -37,17 +39,14 @@ class FastImageViewWithUrl extends ImageView {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-
-        if (mSource != null && glideUrl != null) {
-            loadImage();
-        }
+        tryLoadImage();
     }
 
-    private void loadImage() {
-        String key = glideUrl.toStringUrl();
-        final FastImageSource imageSource = FastImageViewConverter.getImageSource(getContext(), mSource);
+    private void tryLoadImage() {
+        if (mRequestManager != null && mSource != null && glideUrl != null) {
+            String key = glideUrl.toStringUrl();
+            final FastImageSource imageSource = FastImageViewConverter.getImageSource(getContext(), mSource);
 
-        if (mRequestManager != null) {
             mRequestManager
                     // This will make this work for remote and local images. e.g.
                     //    - file:///

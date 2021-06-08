@@ -79,7 +79,6 @@ class FastImageViewManager extends SimpleViewManager<FastImageViewWithUrl> imple
         final GlideUrl glideUrl = imageSource.getGlideUrl();
 
         view.glideUrl = glideUrl;
-        view.setSource(source);
 
         // Cancel existing request.
         if (requestManager != null) {
@@ -100,6 +99,7 @@ class FastImageViewManager extends SimpleViewManager<FastImageViewWithUrl> imple
         RCTEventEmitter eventEmitter = context.getJSModule(RCTEventEmitter.class);
         int viewId = view.getId();
         eventEmitter.receiveEvent(viewId, REACT_ON_LOAD_START_EVENT, new WritableNativeMap());
+        view.setSource(source);
     }
 
     @ReactProp(name = "tintColor", customType = "Color")
