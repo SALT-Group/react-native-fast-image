@@ -34,6 +34,7 @@
         "build": "dv-scripts build && cp src/index.js.flow dist/index.js.flow",
         "lint": "dv-scripts lint",
         "release": "dv-scripts release",
+        "prepare": "npm run build",
         "test": "dv-scripts test"
     },
     "prettier": {
